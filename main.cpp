@@ -22,32 +22,63 @@
 *Itt kezdodik a program						 *
 ****************************************************************/
 
-using namespace std;
-//TRandomMersenne randgen(0);
-//**************************************
-typedef set<int, std::greater<int> > halmaz;
-typedef set<int, std::less<int> > felhalmaz;
-typedef std::map<int, int> intmap;
-typedef std::map<int, double> doublemap;
-typedef std::map<int, doublemap> doublematrix;
+using namespace std;                          
+/*miért nyitja ki a standard névteret?
+ * ha utána  std:: ot használ?
+ * mely típusok definiálásakor van ez kihasználva,
+ * törölhető e ez a  rész?
+ */
+
+typedef set<int, std::greater<int> > halmaz; /*Itt mi történik?*/
+typedef set<int, std::less<int> > felhalmaz; 
+/*Halmaz felhalmaz sehol mashol nem fordul elo*/
+
+typedef std::map<int, int> intmap;			/*dinamikus asszociativ tipus*/
+typedef std::map<int, double> doublemap; 	/*kulcs int ertek int OR double*/
+
 typedef std::map<int, intmap> intmatrix;
+typedef std::map<int, doublemap> doublematrix;
+
+
 doublematrix c,crg;
+/* Mit csinál c, crg változó?*/
+
 struct edge_type 
 	{int                        start, end, h_id;
 	//double                     weight;
 	};
+/*létrehozzuk az élek struktúráját
+ * Eleje, vége, és valami h_id indexe van, 
+ * lehetne súlya is, de az most nins
+ * 
+ * mia h_id?*/
+ 
+	
 typedef std::map<int, edge_type> ellist;
 ellist elek;
+/*létrehozzuk az élek listáját
+ * a kulcs int az érték edge_type (vagyis az él maga)
+ * */
 int elszam, Nodes, NumPts,NumPts2,mode;
+/*Mik ezek a változók?*
+ * elszam: itt egyedül van jelen az egész kódban!
+ * 
+ * mi a szerepük? */
+
 typedef BinaryHeap<double, int, std::less_equal<double> >    min_heap; 
+/*létrehozunk egy bináris fát,
+ * std::less_equal<double> ez micsoda?
+ * */
 min_heap                   m_h;
 min_heap::pair_type        m_he;
+/*::pair_type mi ez? */
 //intmap ha,hb;
 intmatrix hid;
 
 int joa,job;
 double joe, norm;
 doublemap hist,sorn,sor,osz;
+
 double D=0,Sa=0, D0=0,Sa0=0;
 #define INF 1E9
 intmap label;
@@ -58,6 +89,9 @@ int ido;
 double delta1(int a,int b)
 	{//ha csak a sorokat vonjuk ossze, az oszlopokat nem
 	double r=0,s=0,s2=0;
+	/* ere a fordító azt írja, hogy nem használt változó
+	 * Szerepe?*/
+	
 	//v: foatlot adja majd
 	doublemap uj;
 	//a)a kisebbik meretu soron iteralunk vegig, mindig megnezve az adott elem megvan-e a masikban is
