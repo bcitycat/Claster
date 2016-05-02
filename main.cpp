@@ -438,91 +438,105 @@ void qinit_v1()
 	}
 
 int main(int argc, char** argv)
+/*argv tehát egy char pointerre mutato pointer*/
 {	
 	//beolvasas
 	ido=(int) time(NULL);
 	int nov=5;
 	int type =atoi(argv[1]);  //beolvasasi mod
+		/*atoi ez függvény?
+		* hol van definiálva? mit csinál, miért egy tömb a paramétere?
+		* */
 	mode =atoi(argv[2]);  //van-e foatlo: 0 ha nincs
 	NumPts = atoi(argv[3]);   //sorok szama
-	NumPts2 = atoi(argv[4]);   //oszlopok szama
-	//*	
-	char *fg;fg=argv[5];FILE *lg;
-	if(!(lg=fopen(fg,"r"))) {fprintf(stderr,"Bemeneti h fajl megnyitasa sikertelen!\n");exit(-1);} 
+	NumPts2 = atoi(argv[4]);   //oszlopok szama	
+	char *fg;
+	fg=argv[5];
+	FILE *lg;
+	 
+	if(!(lg=fopen(fg,"r"))) 
+	{	
+		fprintf(stderr,"Bemeneti h fajl megnyitasa sikertelen!\n");
+		exit(-1);
+	} 
 	
 	int seed=0; 
 	seed = atoi(argv[6]);
 	MTRand mtrand2(seed);
 	double s;
-	int j=0;
+	int j=0; 
 	int e1,e2;
 	norm=0;
 	
 	int volte;	
 	if (type==1)
-		{//ellistakent jon be c
-            for(int i=1; i<=NumPts; i++)
-            {//c[i][i]=0;
-                sor[i]=0;
-                sorn[i]=0;
-                osz[i]=0;
-            }
-            
-            while (!feof(lg))
-		{j++;
-		fscanf(lg,"%d",&e1);
-		fscanf(lg,"%d",&e2);
-		fscanf(lg,"%lf",&s);
-		if (s>0)
-			{//ha meg nem volt ezt az el:
-			volte=0;	
-			if (c.find(e1)!=c.end())	
-				{if (c[e1].find(e2)!=c[e1].end())
-					{volte=1;
+	{//ellistakent jon be c
+		for(int i=1; i<=NumPts; i++)
+        {	//c[i][i]=0;
+            sor[i]=0;
+            sorn[i]=0;
+            osz[i]=0;
+        }
+        while (!feof(lg))
+		{
+			j++;
+			fscanf(lg,"%d",&e1);
+			fscanf(lg,"%d",&e2);
+			fscanf(lg,"%lf",&s);
+			if (s>0)
+			{
+				//ha meg nem volt ezt az el:
+				volte=0;	
+				if (c.find(e1)!=c.end())	
+				{
+					if (c[e1].find(e2)!=c[e1].end())
+					{
+						volte=1;
 					}
 				}
-			if (volte==0)	
-				{	
-		c[e1][e2]=s;
-		c[e2][e1]=s;
-		sor[e1]+=s;
-        osz[e2]+=s;
-                    if (e1!=e2)
-                    {
-		sor[e2]+=s;
-        osz[e1]+=s;
-		//a foatlot is feltoltjuk:
-		if (mode==1)
-			{sor[e1]+=s;
-		sor[e2]+=s;
-		c[e1][e1]+=s;
-		c[e2][e2]+=s;
-		norm+=2*s;
-			}
-                    
-        norm+=2*s;
-                    }
-                    else
-                    {
-		//sc[e1]+=2*s;
-		//sc[e2]+=2*s;
-		norm+=s;
-                    }
+				if (volte==0)	
+				{
+					c[e1][e2]=s;
+					c[e2][e1]=s;
+					sor[e1]+=s;
+					osz[e2]+=s;
+					if (e1!=e2)
+					{
+						sor[e2]+=s;
+						osz[e1]+=s;
+						//a foatlot is feltoltjuk:
+						if (mode==1)
+						{
+							sor[e1]+=s;
+							sor[e2]+=s;
+							c[e1][e1]+=s;
+							c[e2][e2]+=s;
+							norm+=2*s;
+						}
+						norm+=2*s;
+					}
+					else
+					{
+						//sc[e1]+=2*s;
+						//sc[e2]+=2*s;
+						norm+=s;
+					}
 				}
 			}
 		fscanf(lg,"\n");
 		}
-	fclose(lg);		
-		}
+		fclose(lg);		
+	}
 	else
-	{if (type==0)
-    {
-        //matrixkent jon be c
-        for(int i=1; i<=NumPts; i++)
-        {//c[i][i]=0;
-            sor[i]=0;
-            sorn[i]=0;
-        }
+	{
+		if (type==0)
+		{
+			//matrixkent jon be c
+			for(int i=1; i<=NumPts; i++)
+			{	//c[i][i]=0;
+				sor[i]=0;
+				sorn[i]=0;
+			}
         for(int i=1; i<=NumPts2; i++)
         {//c[i][i]=0;
             osz[i]=0;
